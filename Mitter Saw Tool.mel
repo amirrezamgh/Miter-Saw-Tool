@@ -1,0 +1,96 @@
+global  float $a = 45;
+
+{
+    global proc first_direction_clicked(){
+        $a = `floatField -q -value aValue`;
+        float $Na = -$a;
+        float $Nco = $a - 180 ;
+        float $Aco = 180 - $a;
+        string $selection[] = `ls -sl`;
+        string $selectvertex[] = `filterExpand -expand on -selectionMask 31 $selection`;
+        vector $position = `pointPosition -w $selectvertex`;
+        string $cubeName[] = `listRelatives -parent $selectvertex`;
+        polyCube -ch on -o on -w 1000000 -h 1000000 -d 1000000 -cuv 4 -n cubeCutter;
+        move -r 500000 0 -500000 cubeCutter.scalePivot cubeCutter.rotatePivot ;
+        setAttr "cubeCutter.rotateY" $Nco ;
+        move -rpr ($position.x)  ($position.y)  ($position.z) ;
+        select -r $cubeName;
+        select -tgl cubeCutter;
+        polyCBoolOp -op 2 -ch 1 -preserveColor 0 -classification 2;
+        delete -ch;
+    }
+    global proc second_direction_clicked(){
+        $a = `floatField -q -value aValue`;
+        float $Na = -$a;
+        float $Nco = $a - 180 ;
+        float $Aco = 180 - $a;
+        string $selection[] = `ls -sl`;
+        string $selectvertex[] = `filterExpand -expand on -selectionMask 31 $selection`;
+        vector $position = `pointPosition -w $selectvertex`;
+        string $cubeName[] = `listRelatives -parent $selectvertex`;
+        polyCube -ch on -o on -w 1000000 -h 1000000 -d 1000000 -cuv 4 -n cubeCutter;
+        move -r 500000 0 -500000 cubeCutter.scalePivot cubeCutter.rotatePivot ;
+        setAttr "cubeCutter.rotateY" $a;
+        move -rpr ($position.x)  ($position.y)  ($position.z) ;
+        select -r $cubeName;
+        select -tgl cubeCutter;
+        polyCBoolOp -op 2 -ch 1 -preserveColor 0 -classification 2 ;
+        delete -ch;}
+     global proc third_direction_clicked(){
+         $a = `floatField -q -value aValue`;
+        float $Na = -$a;
+        float $Nco = $a - 180 ;
+        float $Aco = 180 - $a;
+        string $selection[] = `ls -sl`;
+        string $selectvertex[] = `filterExpand -expand on -selectionMask 31 $selection`;
+        vector $position = `pointPosition -w $selectvertex`;
+        string $cubeName[] = `listRelatives -parent $selectvertex`;
+        polyCube -ch on -o on -w 1000000 -h 1000000 -d 1000000 -cuv 4 -n cubeCutter;
+        move -r 500000 0 -500000 cubeCutter.scalePivot cubeCutter.rotatePivot ;
+        setAttr "cubeCutter.rotateY" $Aco ;
+        move -rpr ($position.x)  ($position.y)  ($position.z) ;
+        select -r $cubeName;
+        select -tgl cubeCutter;
+        polyCBoolOp -op 2 -ch 1 -preserveColor 0 -classification 2 ;
+        delete -ch;}
+        
+      global proc fourth_direction_clicked(){
+        $a = `floatField -q -value aValue`;
+        float $Na = -$a;
+        float $Nco = $a - 180 ;
+        float $Aco = 180 - $a;
+        string $selection[] = `ls -sl`;
+        string $selectvertex[] = `filterExpand -expand on -selectionMask 31 $selection`;
+        vector $position = `pointPosition -w $selectvertex`;
+        string $cubeName[] = `listRelatives -parent $selectvertex`;
+        polyCube -ch on -o on -w 1000000 -h 1000000 -d 1000000 -cuv 4 -n cubeCutter;
+        move -r 500000 0 -500000 cubeCutter.scalePivot cubeCutter.rotatePivot ;
+        setAttr "cubeCutter.rotateY" $Na ;
+        move -rpr ($position.x)  ($position.y)  ($position.z) ;
+        select -r $cubeName;
+        select -tgl cubeCutter;
+        polyCBoolOp -op 2 -ch 1 -preserveColor 0 -classification 2 ;
+        delete -ch;}  
+        
+
+    string $toolName = "miSaw";
+    string $toolTitle = "Mitter Saw Cutter";
+    if(`window -exists $toolName`){
+        deleteUI $toolName;
+    }
+    
+    window -t $toolTitle -w 250 -h 360 $toolName;
+    frameLayout -label "Direction" -bs "etchedIn" -cll 1 -cl 0;
+    gridLayout -nc 2 -nr 2 -cwh 125 80;
+    text -l "Angle \n (Max is 89)" -bgc 0.4 0.4 1; 
+    floatField -v 45 -max 89 aValue;
+    setParent..;
+    gridLayout -nc 1 -nr 5 -cwh 250 80;
+    button -label "Direction01 \n \n X axis \n -Z axis" -c "first_direction_clicked";
+    button -label "Direction02 \n \n X axis \n +Z axis" -c "second_direction_clicked";
+    button -label "Direction03 \n \n Z axis \n +X axis" -c "third_direction_clicked";
+    button -label "Direction04 \n \n Z axis \n -X axis" -c "fourth_direction_clicked";
+    text -label "Developed By \n Amirreza Moghaddam" -bgc 1 0.365 0.365 ;
+    setParent ..;
+    showWindow $toolName;
+}
